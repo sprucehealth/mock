@@ -11,7 +11,7 @@ Installation
 Once you have [installed Go][golang-install], install the `mockgen` tool:
 
 ```bash
-go get github.com/golang/mock/mockgen
+go get github.com/sprucehealth/mock/mockgen
 ```
 
 _Note: It is recommended to have `GO111MODULE=on` to ensure the correct
@@ -23,7 +23,7 @@ Documentation
 After installing, you can use `go doc` to get documentation:
 
 ```bash
-go doc github.com/golang/mock/gomock
+go doc github.com/sprucehealth/mock/gomock
 ```
 
 Alternatively, there is an online reference for the package hosted on GoPkgDoc
@@ -221,8 +221,8 @@ If the received value is `3`, then it will be printed as `03`.
 
 [golang]:          http://golang.org/
 [golang-install]:  http://golang.org/doc/install.html#releases
-[gomock-ref]:      http://godoc.org/github.com/golang/mock/gomock
+[gomock-ref]:      http://godoc.org/github.com/sprucehealth/mock/gomock
 [travis-ci-badge]: https://travis-ci.org/golang/mock.svg?branch=master
 [travis-ci]:       https://travis-ci.org/golang/mock
-[godoc-badge]:     https://godoc.org/github.com/golang/mock/gomock?status.svg
-[godoc]:           https://godoc.org/github.com/golang/mock/gomock
+[godoc-badge]:     https://godoc.org/github.com/sprucehealth/mock/gomock?status.svg
+[godoc]:           https://godoc.org/github.com/sprucehealth/mock/gomock

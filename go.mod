@@ -1,5 +1,8 @@
-module github.com/golang/mock
+module github.com/sprucehealth/mock
 
-require golang.org/x/tools v0.0.0-20190425150028-36563e24a262
+go 1.13
 
-go 1.11
+require (
+	github.com/sprucehealth/mock v1.3.1
+	golang.org/x/tools v0.0.0-20200108203644-89082a384178
+)

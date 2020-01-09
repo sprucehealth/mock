@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/golang/mock/mockgen/model"
+	"github.com/sprucehealth/mock/mockgen/model"
 )
 
 func TestMakeArgString(t *testing.T) {
