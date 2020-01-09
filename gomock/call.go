@@ -20,7 +20,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/golang/mock/gomock/internal/validate"
+	"github.com/sprucehealth/mock/gomock/internal/validate"
+	"github.com/sprucehealth/pretty"
 )
 
 // Call represents an expected call to a mock.
@@ -335,10 +336,14 @@ func (c *Call) matches(args []interface{}) error {
 				if gs, ok := m.(GotFormatter); ok {
 					got = gs.Got(args[i])
 				}
+				dt := fmt.Sprintf("Got: %v\nWant: %v", got, m)
+				if em, ok := m.(eqMatcher); ok {
+					dt = fmt.Sprintf("Difference:\n%s", eqDiff(args[i], em.x))
+				}
 
 				return fmt.Errorf(
-					"expected call at %s doesn't match the argument at index %d.\nGot: %v\nWant: %v",
-					c.origin, i, got, m,
+					"expected call at %s doesn't match the argument at index %d.\n%s",
+					c.origin, i, dt,
 				)
 			}
 		}
@@ -360,8 +365,12 @@ func (c *Call) matches(args []interface{}) error {
 			if i < c.methodType.NumIn()-1 {
 				// Non-variadic args
 				if !m.Matches(args[i]) {
-					return fmt.Errorf("expected call at %s doesn't match the argument at index %s.\nGot: %v\nWant: %v",
-						c.origin, strconv.Itoa(i), args[i], m)
+					dt := fmt.Sprintf("Got: %v\nWant: %v", args[i], m)
+					if em, ok := m.(eqMatcher); ok {
+						dt = fmt.Sprintf("Difference:\n%s", eqDiff(args[i], em.x))
+					}
+					return fmt.Errorf("expected call at %s doesn't match the argument at index %s.\n%s",
+						c.origin, strconv.Itoa(i), dt)
 				}
 				continue
 			}
@@ -403,8 +412,12 @@ func (c *Call) matches(args []interface{}) error {
 			// Got Foo(a, b, c, d) want Foo(matcherA, matcherB, matcherC, matcherD, matcherE)
 			// Got Foo(a, b, c, d, e) want Foo(matcherA, matcherB, matcherC, matcherD)
 			// Got Foo(a, b, c) want Foo(matcherA, matcherB)
-			return fmt.Errorf("Expected call at %s doesn't match the argument at index %s.\nGot: %v\nWant: %v",
-				c.origin, strconv.Itoa(i), args[i:], c.args[i])
+			dt := fmt.Sprintf("Got: %v\nWant: %v", args[i:], c.args[i])
+			if em, ok := m.(eqMatcher); ok {
+				dt = fmt.Sprintf("Difference:\n%s", eqDiff(args[i], em.x))
+			}
+			return fmt.Errorf("Expected call at %s doesn't match the argument at index %s.\n%s",
+				c.origin, strconv.Itoa(i), dt)
 
 		}
 	}
@@ -454,4 +467,8 @@ func setSlice(arg interface{}, v reflect.Value) {
 
 func (c *Call) addAction(action func([]interface{}) []interface{}) {
 	c.actions = append(c.actions, action)
+}
+
+func eqDiff(a interface{}, b interface{}) string {
+	return strings.Join(pretty.Diff(a, b), "\n")
 }

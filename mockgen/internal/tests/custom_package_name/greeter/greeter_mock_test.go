@@ -5,8 +5,8 @@
 package greeter
 
 import (
-	gomock "github.com/golang/mock/gomock"
-	client "github.com/golang/mock/mockgen/internal/tests/custom_package_name/client/v1"
+	gomock "github.com/sprucehealth/mock/gomock"
+	client "github.com/sprucehealth/mock/mockgen/internal/tests/custom_package_name/client/v1"
 	reflect "reflect"
 )
 

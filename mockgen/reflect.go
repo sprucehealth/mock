@@ -30,7 +30,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/golang/mock/mockgen/model"
+	"github.com/sprucehealth/mock/mockgen/model"
 )
 
 var (
@@ -189,7 +189,7 @@ import (
 	"path"
 	"reflect"
 
-	"github.com/golang/mock/mockgen/model"
+	"github.com/sprucehealth/mock/mockgen/model"
 
 	pkg_ {{printf "%q" .ImportPath}}
 )
