@@ -308,7 +308,7 @@ func (c *Call) matches(args []interface{}) error {
 				}
 				dt := fmt.Sprintf("Got: %v\nWant: %v", got, m)
 				if em, ok := m.(eqMatcher); ok {
-					dt = fmt.Sprintf("Difference: %s", eqDiff(args[i], em.x))
+					dt = fmt.Sprintf("Difference:\n%s", eqDiff(args[i], em.x))
 				}
 
 				return fmt.Errorf(
@@ -337,7 +337,7 @@ func (c *Call) matches(args []interface{}) error {
 				if !m.Matches(args[i]) {
 					dt := fmt.Sprintf("Got: %v\nWant: %v", args[i], m)
 					if em, ok := m.(eqMatcher); ok {
-						dt = fmt.Sprintf("Difference: %s", eqDiff(args[i], em.x))
+						dt = fmt.Sprintf("Difference:\n%s", eqDiff(args[i], em.x))
 					}
 					return fmt.Errorf("expected call at %s doesn't match the argument at index %s.\n%s",
 						c.origin, strconv.Itoa(i), dt)
@@ -384,7 +384,7 @@ func (c *Call) matches(args []interface{}) error {
 			// Got Foo(a, b, c) want Foo(matcherA, matcherB)
 			dt := fmt.Sprintf("Got: %v\nWant: %v", args[i:], c.args[i])
 			if em, ok := m.(eqMatcher); ok {
-				dt = fmt.Sprintf("Difference: %s", eqDiff(args[i], em.x))
+				dt = fmt.Sprintf("Difference:\n%s", eqDiff(args[i], em.x))
 			}
 			return fmt.Errorf("Expected call at %s doesn't match the argument at index %s.\n%s",
 				c.origin, strconv.Itoa(i), dt)
