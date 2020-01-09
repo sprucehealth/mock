@@ -31,7 +31,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/golang/mock/mockgen/model"
+	"github.com/sprucehealth/mock/mockgen/model"
 	"golang.org/x/tools/go/packages"
 )
 
