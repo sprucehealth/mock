@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"github.com/sprucehealth/pretty"
 )
 
 // Call represents an expected call to a mock.
@@ -307,8 +308,8 @@ func (c *Call) matches(args []interface{}) error {
 				}
 
 				return fmt.Errorf(
-					"expected call at %s doesn't match the argument at index %d.\nGot: %v\nWant: %v",
-					c.origin, i, got, m,
+					"expected call at %s doesn't match the argument at index %d.\nDifference: %s",
+					c.origin, i, pretty.Diff(got, m),
 				)
 			}
 		}
@@ -330,8 +331,8 @@ func (c *Call) matches(args []interface{}) error {
 			if i < c.methodType.NumIn()-1 {
 				// Non-variadic args
 				if !m.Matches(args[i]) {
-					return fmt.Errorf("expected call at %s doesn't match the argument at index %s.\nGot: %v\nWant: %v",
-						c.origin, strconv.Itoa(i), args[i], m)
+					return fmt.Errorf("expected call at %s doesn't match the argument at index %s.\nDifference: %s",
+						c.origin, strconv.Itoa(i), pretty.Diff(args[i], m))
 				}
 				continue
 			}
@@ -373,8 +374,8 @@ func (c *Call) matches(args []interface{}) error {
 			// Got Foo(a, b, c, d) want Foo(matcherA, matcherB, matcherC, matcherD, matcherE)
 			// Got Foo(a, b, c, d, e) want Foo(matcherA, matcherB, matcherC, matcherD)
 			// Got Foo(a, b, c) want Foo(matcherA, matcherB)
-			return fmt.Errorf("Expected call at %s doesn't match the argument at index %s.\nGot: %v\nWant: %v",
-				c.origin, strconv.Itoa(i), args[i:], c.args[i])
+			return fmt.Errorf("Expected call at %s doesn't match the argument at index %s.\nDifference: %s",
+				c.origin, strconv.Itoa(i), pretty.Diff(args[i:], c.args[i]))
 
 		}
 	}
