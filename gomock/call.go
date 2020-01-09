@@ -16,10 +16,10 @@ package gomock
 
 import (
 	"fmt"
+	"github.com/sprucehealth/pretty"
 	"reflect"
 	"strconv"
 	"strings"
-	"github.com/sprucehealth/pretty"
 )
 
 // Call represents an expected call to a mock.
@@ -309,7 +309,7 @@ func (c *Call) matches(args []interface{}) error {
 
 				return fmt.Errorf(
 					"expected call at %s doesn't match the argument at index %d.\nDifference: %s",
-					c.origin, i, pretty.Diff(got, m),
+					c.origin, i, prettyDiff(got, m),
 				)
 			}
 		}
@@ -332,7 +332,7 @@ func (c *Call) matches(args []interface{}) error {
 				// Non-variadic args
 				if !m.Matches(args[i]) {
 					return fmt.Errorf("expected call at %s doesn't match the argument at index %s.\nDifference: %s",
-						c.origin, strconv.Itoa(i), pretty.Diff(args[i], m))
+						c.origin, strconv.Itoa(i), prettyDiff(args[i], m))
 				}
 				continue
 			}
@@ -375,7 +375,7 @@ func (c *Call) matches(args []interface{}) error {
 			// Got Foo(a, b, c, d, e) want Foo(matcherA, matcherB, matcherC, matcherD)
 			// Got Foo(a, b, c) want Foo(matcherA, matcherB)
 			return fmt.Errorf("Expected call at %s doesn't match the argument at index %s.\nDifference: %s",
-				c.origin, strconv.Itoa(i), pretty.Diff(args[i:], c.args[i]))
+				c.origin, strconv.Itoa(i), prettyDiff(args[i:], c.args[i]))
 
 		}
 	}
@@ -425,4 +425,8 @@ func setSlice(arg interface{}, v reflect.Value) {
 
 func (c *Call) addAction(action func([]interface{}) []interface{}) {
 	c.actions = append(c.actions, action)
+}
+
+func prettyDiff(a interface{}, b interface{}) string {
+	return strings.Join(pretty.Diff(a, b), "\n")
 }
